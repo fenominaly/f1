@@ -1,0 +1,297 @@
+import { useEffect, useRef, useState } from 'react';
+import { create } from 'zustand';
+import { useLive, onFrame, onMoment } from '@/store/live';
+import { useSettings, prefersReducedMotion, resolveQuality, type RenderMode } from '@/store/settings';
+import type { RaceScene } from '@/three/engine/RaceScene';
+import type { CameraMode } from '@/three/engine/cameraRig';
+import { TrackMap } from '@/ui/TrackMap';
+import { useMapCars } from '@/app/hooks';
+import { t } from '@/i18n/core';
+import { haptic } from '@/telegram/sdk';
+import { LiveArt } from '@/ui/live/LiveArt';
+import '@/styles/scene.css';
+
+export type SceneLayout = 'hidden' | 'full' | 'top';
+
+interface SceneViewState {
+  layout: SceneLayout;
+  zone: 1 | 2 | 3 | null;
+  frameZone: boolean;
+  /** Extra label ids (pool subjects). */
+  labels: string[];
+  cameraOverride: CameraMode | null;
+  frozen: boolean;
+  webglLost: boolean;
+  pickList: string[] | null;
+  /** Explicit 3D choice on the Live screen; overrides the low-tier 2D-art default. */
+  live3dOptIn: boolean;
+  set: (p: Partial<Omit<SceneViewState, 'set'>>) => void;
+}
+
+const OPT_IN_KEY = 'pa-f1-live3d';
+function readOptIn(): boolean {
+  try {
+    return localStorage.getItem(OPT_IN_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+export const useSceneView = create<SceneViewState>((set) => ({
+  layout: 'hidden',
+  zone: null,
+  frameZone: false,
+  labels: [],
+  cameraOverride: null,
+  frozen: false,
+  webglLost: false,
+  pickList: null,
+  live3dOptIn: readOptIn(),
+  set: (p) => set(p),
+}));
+
+/** Remember the Live render choice: picking 3D on a low-tier device is an explicit opt-in. */
+export function chooseLiveRender(mode: RenderMode): void {
+  useSettings.getState().set({ renderMode: mode });
+  const optIn = mode === '3d';
+  useSceneView.getState().set({ live3dOptIn: optIn });
+  try {
+    if (optIn) localStorage.setItem(OPT_IN_KEY, '1');
+    else localStorage.removeItem(OPT_IN_KEY);
+  } catch {
+    /* private mode: the choice lasts for the session */
+  }
+}
+
+/**
+ * Render mode actually used for a layout. On the Live screen ('full') low-tier devices default to
+ * the 2D art view until the user picks 3D; pool screens keep the stored mode. WebGL loss → 2D.
+ */
+export function useRenderMode(layout: SceneLayout): RenderMode {
+  const renderMode = useSettings((s) => s.renderMode);
+  const quality = useSettings((s) => s.quality);
+  const optIn = useSceneView((s) => s.live3dOptIn);
+  const webglLost = useSceneView((s) => s.webglLost);
+  if (renderMode !== '3d' || webglLost || !webglAvailable()) return '2d';
+  if (layout === 'full' && !optIn && resolveQuality(quality) === 'low') return '2d';
+  return '3d';
+}
+
+let activeScene: RaceScene | null = null;
+
+/** The 3D engine (three.js + scene) is its own chunk: the first paint never waits for it. */
+let enginePromise: Promise<typeof import('@/three/engine/RaceScene')> | null = null;
+export function loadEngine(): Promise<typeof import('@/three/engine/RaceScene')> {
+  enginePromise ??= import('@/three/engine/RaceScene');
+  return enginePromise;
+}
+/** WebGL context losses this session: each one steps the quality tier down before the automatic retry. */
+let contextLosses = 0;
+let retryTimer = 0;
+const QUALITY_STEPS = ['low', 'medium', 'high'] as const;
+
+function effectiveQuality(q: ReturnType<typeof resolveQuality>): ReturnType<typeof resolveQuality> {
+  const i = QUALITY_STEPS.indexOf(q);
+  return QUALITY_STEPS[Math.max(0, i - contextLosses)]!;
+}
+export function getScene(): RaceScene | null {
+  return activeScene;
+}
+
+let webglOk: boolean | null = null;
+
+/** Probed once: every probe is a live context, and browsers evict the oldest (possibly the scene's) past ~16. */
+export function webglAvailable(): boolean {
+  if (webglOk !== null) return webglOk;
+  try {
+    const c = document.createElement('canvas');
+    const gl = c.getContext('webgl2') ?? c.getContext('webgl');
+    webglOk = !!gl;
+    gl?.getExtension('WEBGL_lose_context')?.loseContext();
+  } catch {
+    webglOk = false;
+  }
+  return webglOk;
+}
+
+/**
+ * Persistent scene host: owns the single WebGL context. Screens choose the
+ * layout ('full' for Live, 'top' for pool screens). Falls back to the SVG
+ * map when 2D mode is chosen or the context is lost (F1-045, QA19).
+ */
+export function SceneHost() {
+  const layout = useSceneView((s) => s.layout);
+  const renderMode = useSettings((s) => s.renderMode);
+  const runner = useLive((s) => s.runner);
+  const use3d = useRenderMode(layout) === '3d';
+  useEffect(() => {
+    if (renderMode !== '3d') return;
+    const idle = window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 1200));
+    idle(() => void loadEngine());
+  }, [renderMode]);
+  return (
+    <div className={`scene-host scene-host--${layout}`} aria-hidden={layout === 'hidden'}>
+      {runner && layout !== 'hidden' && (use3d ? <Scene3D key={`${runner.manifest.session_id}`} /> : <Scene2D layout={layout} />)}
+    </div>
+  );
+}
+
+function Scene2D({ layout }: { layout: SceneLayout }) {
+  const labels = useSceneView((s) => s.labels);
+  return layout === 'full' ? <LiveArt labels={labels} /> : <SceneMap />;
+}
+
+/** Pool screens: the flat schematic under the pool hero. */
+function SceneMap() {
+  const runner = useLive((s) => s.runner);
+  const live = useLive((s) => s.live);
+  const followId = useLive((s) => s.followId);
+  const rivalId = useLive((s) => s.rivalId);
+  const zone = useSceneView((s) => s.zone);
+  const labels = useSceneView((s) => s.labels);
+  const cars = useMapCars(live, followId, rivalId, labels);
+  if (!runner) return null;
+  return (
+    <div className="scene-2d">
+      <TrackMap circuit={runner.circuit} cars={cars} selectedSector={zone} width={360} height={360} padding={26} showCorners stale={live?.stale} />
+    </div>
+  );
+}
+
+function Scene3D() {
+  const host = useRef<HTMLDivElement>(null);
+  const labelsRef = useRef<HTMLDivElement>(null);
+  const runner = useLive((s) => s.runner);
+  const live = useLive((s) => s.live);
+  const followId = useLive((s) => s.followId);
+  const rivalId = useLive((s) => s.rivalId);
+  const setFollow = useLive((s) => s.setFollow);
+  const quality = useSettings((s) => s.quality);
+  const motion = useSettings((s) => s.motion);
+  const camera = useSettings((s) => s.camera);
+  const showZones = useSettings((s) => s.showZones);
+  const view = useSceneView();
+  const [ready, setReady] = useState(false);
+  const [buildProgress, setBuildProgress] = useState(0);
+  const sceneRef = useRef<RaceScene | null>(null);
+
+  // Build scene for this session.
+  useEffect(() => {
+    if (!host.current || !labelsRef.current || !runner) return;
+    let disposed = false;
+    let teardown: (() => void) | null = null;
+    setReady(false);
+    setBuildProgress(0);
+    void loadEngine().then(({ RaceScene }) => {
+      if (disposed || !host.current || !labelsRef.current) return;
+      const scene = new RaceScene(host.current, {
+        quality: effectiveQuality(resolveQuality(quality)),
+        reducedMotion: prefersReducedMotion(motion),
+        labelLayer: labelsRef.current,
+        onContextLost: () => {
+          contextLosses++;
+          useSceneView.getState().set({ webglLost: true });
+          // Recover automatically (once or twice) on a lower tier; the 2D map covers the gap.
+          window.clearTimeout(retryTimer);
+          if (contextLosses <= 2) retryTimer = window.setTimeout(() => useSceneView.getState().set({ webglLost: false }), 2500);
+        },
+        onPick: (ids) => {
+          haptic.tap();
+          if (ids.length === 1) useLive.getState().setFollow(ids[0]!);
+          else useSceneView.getState().set({ pickList: ids });
+        },
+      });
+      sceneRef.current = scene;
+      activeScene = scene;
+      if (import.meta.env.DEV) Object.assign(window, { __scene: scene });
+      void scene.load(runner.circuit, runner.model, runner.manifest.participants, (p) => !disposed && setBuildProgress(p)).then(() => {
+        if (disposed) return;
+        setReady(true);
+      });
+      const offFrame = onFrame((f) => scene.pushFrame(f));
+      const offMoment = onMoment((m) => scene.onMoment(m));
+      let raf = 0;
+      let last = performance.now();
+      const loop = (now: number) => {
+        const dt = Math.min(0.1, (now - last) / 1000);
+        last = now;
+        if (document.visibilityState !== 'hidden' && useSceneView.getState().layout !== 'hidden') {
+          scene.render(dt, useLive.getState().live?.stale ?? false);
+        }
+        raf = requestAnimationFrame(loop);
+      };
+      raf = requestAnimationFrame(loop);
+      teardown = () => {
+        cancelAnimationFrame(raf);
+        offFrame();
+        offMoment();
+        scene.dispose();
+        if (activeScene === scene) activeScene = null;
+        sceneRef.current = null;
+      };
+    });
+    return () => {
+      disposed = true;
+      teardown?.();
+    };
+    // Quality change rebuilds the scene; the selection lives in stores and survives (F1-045).
+  }, [runner, quality]);
+
+  useEffect(() => {
+    sceneRef.current?.setReducedMotion(prefersReducedMotion(motion));
+  }, [motion, ready]);
+
+  useEffect(() => {
+    sceneRef.current?.follow(followId);
+  }, [followId, ready]);
+  useEffect(() => {
+    sceneRef.current?.setRival(rivalId);
+  }, [rivalId, ready]);
+  useEffect(() => {
+    sceneRef.current?.setCameraMode(view.cameraOverride ?? camera);
+  }, [camera, view.cameraOverride, ready]);
+  useEffect(() => {
+    sceneRef.current?.freezeCamera(view.frozen);
+  }, [view.frozen, ready]);
+  useEffect(() => {
+    sceneRef.current?.setZone(view.zone, view.frameZone);
+  }, [view.zone, view.frameZone, ready]);
+  useEffect(() => {
+    sceneRef.current?.showZones(showZones || view.zone !== null);
+  }, [showZones, view.zone, ready]);
+  useEffect(() => {
+    const s = sceneRef.current;
+    if (!s || !live) return;
+    s.setTrackState(live.trackState);
+    // Labels: followed, rival, two nearest neighbours + pool subjects (F1-048).
+    const ids = new Set<string>();
+    if (followId) ids.add(followId);
+    if (rivalId) ids.add(rivalId);
+    view.labels.forEach((id) => ids.add(id));
+    const idx = live.cars.findIndex((c) => c.id === followId);
+    if (idx >= 0) {
+      if (live.cars[idx - 1]) ids.add(live.cars[idx - 1]!.id);
+      if (live.cars[idx + 1]) ids.add(live.cars[idx + 1]!.id);
+    }
+    s.setLabelIds([...ids]);
+    s.setPositions(new Map(live.cars.map((c) => [c.id, c.position])));
+    s.setSectorFlags(live.sectorFlags);
+  }, [live, followId, rivalId, view.labels, ready]);
+
+  return (
+    <>
+      <div ref={host} className="scene-canvas-wrap" />
+      <div className="scene-vignette" />
+      <div ref={labelsRef} className="label-layer" />
+      {!ready && (
+        <div className="scene-loading">
+          <div className="loader-ring" />
+          <div className="muted" style={{ marginTop: 10, fontSize: 13 }}>
+            {t('ui.building')} {Math.round(buildProgress * 100)}%
+          </div>
+        </div>
+      )}
+      {void setFollow}
+    </>
+  );
+}

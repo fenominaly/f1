@@ -1,0 +1,369 @@
+/* ------------------------------------------------------------------ */
+/* Screens: races, meeting, circuit, driver, profile, wallet,          */
+/* leaderboard, rewards, history, settings, onboarding (prefix sc-)    */
+/* ------------------------------------------------------------------ */
+
+.sc-head {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  margin-top: 2px;
+}
+.sc-head__txt {
+  flex: 1;
+  min-width: 0;
+}
+.sc-kicker {
+  display: none;
+}
+.sc-note {
+  max-width: 60%;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--muted);
+  text-align: right;
+}
+.sc-fine {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: var(--sp-3) 2px 0;
+  font-size: var(--fs-xs);
+  line-height: 1.45;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+.sc-fine--note {
+  margin-top: var(--sp-4);
+  padding: 10px 12px;
+  border-radius: var(--r-tile);
+  background: var(--s2);
+  box-shadow: var(--rim);
+}
+.sc-fine .icon {
+  flex: none;
+  margin-top: 1px;
+}
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+.sc-neg {
+  color: #ff7a83;
+}
+.sc-btnrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 12px;
+}
+.sc-btnrow--split {
+  margin-top: 0;
+}
+.sc-btnrow--split > .btn {
+  flex: 1 1 auto;
+  min-width: 0;
+  gap: 6px;
+  padding: 0 12px;
+  font-size: 14px;
+}
+
+/* The global .icon rule pins 20px; honour explicit icon sizes inside screen components. */
+:is([class^='sc-'], [class*=' sc-']) .icon[width='10'] {
+  width: 10px;
+  height: 10px;
+}
+:is([class^='sc-'], [class*=' sc-']) .icon[width='12'] {
+  width: 12px;
+  height: 12px;
+}
+:is([class^='sc-'], [class*=' sc-']) .icon[width='13'] {
+  width: 13px;
+  height: 13px;
+}
+:is([class^='sc-'], [class*=' sc-']) .icon[width='14'] {
+  width: 14px;
+  height: 14px;
+}
+:is([class^='sc-'], [class*=' sc-']) .icon[width='16'] {
+  width: 16px;
+  height: 16px;
+}
+:is([class^='sc-'], [class*=' sc-']) .icon[width='18'] {
+  width: 18px;
+  height: 18px;
+}
+:is([class^='sc-'], [class*=' sc-']) .icon[width='20'] {
+  width: 20px;
+  height: 20px;
+}
+:is([class^='sc-'], [class*=' sc-']) .icon[width='22'] {
+  width: 22px;
+  height: 22px;
+}
+:is([class^='sc-'], [class*=' sc-']) .icon[width='24'] {
+  width: 24px;
+  height: 24px;
+}
+:is([class^='sc-'], [class*=' sc-']) .icon[width='26'] {
+  width: 26px;
+  height: 26px;
+}
+:is([class^='sc-'], [class*=' sc-']) .icon[width='28'] {
+  width: 28px;
+  height: 28px;
+}
+:is([class^='sc-'], [class*=' sc-']) .icon[width='40'] {
+  width: 40px;
+  height: 40px;
+}
+:is([class^='sc-'], [class*=' sc-']) .icon[width='46'] {
+  width: 46px;
+  height: 46px;
+}
+
+/* Icon tiles: neutral S2; colour belongs to the data, not to the tile. */
+.sc-ic {
+  --c: var(--text-2);
+  width: 40px;
+  height: 40px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-tile);
+  background: var(--s2);
+  box-shadow: var(--rim);
+  color: var(--c);
+}
+
+/* Status pills */
+.sc-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: var(--r-chip);
+  background: var(--s2);
+  box-shadow: var(--rim);
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.sc-pill .dot-live {
+  width: 6px;
+  height: 6px;
+}
+.sc-pill--completed { color: var(--muted); }
+.sc-pill--live { color: var(--red); background: rgba(255, 59, 71, 0.12); }
+.sc-pill--next { color: var(--lime); background: rgba(198, 255, 61, 0.1); }
+.sc-pill--upcoming { color: var(--text-2); }
+.sc-pill--sprint { color: var(--purple); }
+.sc-pill--fl { color: var(--purple); height: 18px; padding: 0 5px; }
+.sc-pill--demo { color: var(--text-2); letter-spacing: 0.02em; }
+
+/* Progress bar */
+.sc-bar {
+  --c: var(--lime);
+  position: relative;
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+}
+.sc-bar[data-tone='cyan'] { --c: var(--cyan); }
+.sc-bar[data-tone='purple'] { --c: var(--purple); }
+.sc-bar[data-tone='yellow'] { --c: var(--yellow); }
+.sc-bar[data-tone='red'] { --c: var(--red); }
+.sc-bar[data-tone='orange'] { --c: var(--orange); }
+.sc-bar > span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--c) 55%, transparent), var(--c));
+  transform-origin: left;
+  animation: sc-grow var(--dur-4) var(--ease-out) both;
+}
+@keyframes sc-grow {
+  from { transform: scaleX(0); }
+}
+
+/* Toggle switch (also used by the live "View" sheet) */
+.sc-toggle {
+  position: relative;
+  width: 52px;
+  height: 32px;
+  flex: none;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: var(--rim);
+  transition: background-color var(--dur-2) var(--ease-out);
+}
+.sc-toggle::after {
+  content: '';
+  position: absolute;
+  inset: -6px -2px;
+}
+.sc-toggle:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 3px;
+}
+.sc-toggle__knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #d5dce1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+  transition: transform var(--dur-2) var(--ease-out), background-color var(--dur-2);
+}
+.sc-toggle[data-on='true'] {
+  background: linear-gradient(180deg, var(--lime-hi), var(--lime-lo));
+}
+.sc-toggle[data-on='true'] .sc-toggle__knob {
+  transform: translateX(20px);
+  background: #0b1200;
+}
+
+/* Menu rows */
+.sc-menu-list {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--r-card);
+  background: var(--s1);
+  border: 1px solid var(--s1-stroke);
+  box-shadow: var(--rim);
+  overflow: hidden;
+}
+.sc-menu {
+  width: 100%;
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px 10px 12px;
+  text-align: left;
+  transition: background-color var(--dur-1);
+}
+.sc-menu + .sc-menu {
+  border-top: 1px solid var(--stroke);
+}
+.sc-menu:active {
+  background: rgba(255, 255, 255, 0.04);
+}
+.sc-menu:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: -2px;
+}
+.sc-menu__art {
+  flex: none;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+}
+.sc-menu__txt {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.sc-menu__t {
+  font-size: var(--fs-md);
+  font-weight: 600;
+}
+.sc-menu__s {
+  font-size: var(--fs-xs);
+  line-height: 1.35;
+  color: var(--muted);
+}
+.sc-menu__v {
+  flex: none;
+  font-weight: 600;
+  color: var(--text-2);
+}
+.sc-menu__chev {
+  flex: none;
+  color: var(--muted);
+}
+.sc-dotbadge {
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  background: var(--lime);
+  color: #0b1200;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+}
+
+/* Empty state (line-icon variant; screens with art use <EmptyState>) */
+.sc-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: var(--sp-4) var(--sp-2) var(--sp-3);
+  text-align: center;
+}
+.sc-empty__ic {
+  width: 52px;
+  height: 52px;
+  margin-bottom: 4px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-card);
+  background: var(--s2);
+  box-shadow: var(--rim);
+  color: var(--text-2);
+}
+.sc-empty__t {
+  font-size: var(--fs-md);
+  font-weight: 700;
+  text-wrap: balance;
+}
+.sc-empty__b {
+  max-width: 30ch;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+  text-wrap: pretty;
+}
+
+/* Circuit thumbnails */
+.sc-thumb {
+  flex: none;
+  overflow: visible;
+}
+.sc-thumb__base {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.06);
+  stroke-width: 7;
+  stroke-linejoin: round;
+}
+.sc-thumb__line {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.66);
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.sc-thumb--draw .sc-thumb__line {
+  stroke-dasharray: 1;
+  animation: sc-draw 1.6s var(--ease-out) both;
+}
+@keyframes sc-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+.sc-thumb__start {
+  fill: #fff;
+  stroke: var(--bg);
+  stroke-width: 1.5;
+}
