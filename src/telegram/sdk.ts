@@ -63,9 +63,9 @@ export function initTelegram(): void {
   try {
     w.ready();
     w.expand();
-    w.setHeaderColor?.('#07090B');
-    w.setBackgroundColor?.('#07090B');
-    w.setBottomBarColor?.('#07090B');
+    w.setHeaderColor?.('#050706');
+    w.setBackgroundColor?.('#050706');
+    w.setBottomBarColor?.('#050706');
     if (w.isVersionAtLeast?.('7.7')) w.disableVerticalSwipes?.();
   } catch {
     /* outside Telegram */

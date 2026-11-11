@@ -32,7 +32,7 @@ function markLoaded(el: HTMLImageElement | null) {
  */
 export function Art({ name, alt = '', sizes = 'min(100vw, 480px)', priority, scrim = 'none', focal, ratio, className, style, children }: ArtProps) {
   const info = assetInfo(name);
-  const css = { '--art-c': info?.c ?? '#10161a', aspectRatio: ratio, ...style } as CSSProperties;
+  const css = { '--art-c': info?.c ?? '#0e1411', aspectRatio: ratio, ...style } as CSSProperties;
   return (
     <div className={`art${scrim !== 'none' ? ` art--scrim-${scrim}` : ''}${className ? ` ${className}` : ''}`} style={css}>
       {info && (

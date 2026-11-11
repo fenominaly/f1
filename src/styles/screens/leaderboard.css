@@ -232,7 +232,7 @@
   margin-top: var(--sp-3);
   border: 1px solid rgba(198, 255, 61, 0.3);
   border-radius: var(--r-card);
-  background: linear-gradient(180deg, #172026, #10171b);
+  background: linear-gradient(180deg, #172026, #0f1613);
   box-shadow:
     var(--rim),
     0 14px 32px -10px rgba(0, 0, 0, 0.8);

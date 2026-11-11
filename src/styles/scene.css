@@ -12,17 +12,17 @@
   z-index: 1;
   pointer-events: none;
   background:
-    radial-gradient(120% 85% at 50% 45%, transparent 55%, rgba(3, 6, 8, 0.55) 100%),
-    linear-gradient(180deg, rgba(4, 7, 9, 0.5) 0%, transparent 16%, transparent 72%, rgba(4, 7, 9, 0.55) 100%);
+    radial-gradient(120% 85% at 50% 45%, transparent 55%, rgba(3, 6, 5, 0.55) 100%),
+    linear-gradient(180deg, rgba(4, 7, 6, 0.5) 0%, transparent 16%, transparent 72%, rgba(4, 7, 6, 0.55) 100%);
 }
 .scene-host--top .scene-vignette {
-  background: radial-gradient(120% 90% at 50% 50%, transparent 60%, rgba(3, 6, 8, 0.5) 100%);
+  background: radial-gradient(120% 90% at 50% 50%, transparent 60%, rgba(3, 6, 5, 0.5) 100%);
 }
 
 /* ---------------- Live 2D art: circuit plate + neon track (spec §9.2) ---------------- */
 .scene-art {
   display: block;
-  background: #070b0d;
+  background: #060a08;
 }
 .scene-art__plate {
   position: absolute;
@@ -35,8 +35,8 @@
   inset: 0;
   z-index: 1;
   background:
-    linear-gradient(180deg, rgba(7, 9, 11, 0.88) 0%, rgba(7, 9, 11, 0.35) 24%, rgba(7, 9, 11, 0.3) 70%, rgba(7, 9, 11, 0.9) 100%),
-    radial-gradient(70% 55% at 50% 55%, rgba(7, 9, 11, 0.35), transparent 75%);
+    linear-gradient(180deg, rgba(5, 7, 6, 0.88) 0%, rgba(5, 7, 6, 0.35) 24%, rgba(5, 7, 6, 0.3) 70%, rgba(5, 7, 6, 0.9) 100%),
+    radial-gradient(70% 55% at 50% 55%, rgba(5, 7, 6, 0.35), transparent 75%);
   pointer-events: none;
 }
 .scene-art__map {
@@ -64,7 +64,7 @@
   top: calc(var(--safe-top) + 112px);
   padding: 2px 8px;
   border-radius: 6px;
-  background: rgba(7, 9, 11, 0.7);
+  background: rgba(5, 7, 6, 0.7);
   color: var(--text-2);
   font-size: var(--fs-xs);
 }
@@ -86,7 +86,7 @@
   align-items: stretch;
   height: 20px;
   border-radius: 6px;
-  background: rgba(8, 12, 15, 0.86);
+  background: rgba(7, 12, 10, 0.86);
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
   color: #f1f5f7;
   font: 600 11px/20px var(--font-num, 'Chakra Petch', monospace);
@@ -183,7 +183,7 @@
   padding: 2px 8px;
   border-radius: 7px;
   border: 1px solid var(--zc);
-  background: rgba(6, 10, 13, 0.78);
+  background: rgba(5, 10, 8, 0.78);
   color: var(--zc);
   font: 700 11px/16px var(--font-num, 'Chakra Petch', monospace);
   letter-spacing: 0.08em;

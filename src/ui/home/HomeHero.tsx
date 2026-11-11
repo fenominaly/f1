@@ -85,7 +85,7 @@ export const HomeHero = memo(function HomeHero({ onOpen }: { onOpen: () => void 
       <div className="hm-hero__body">
         <ol className="hm-tower card--glass" aria-label={t('home.liveTiming')}>
           {live
-            ? live.cars.slice(0, 3).map((c) => (
+            ? live.cars.slice(0, 5).map((c) => (
                 <li key={c.id} className={c.id === followId ? 'hm-tower__on' : undefined}>
                   <span className="num hm-tower__pos">{c.position}</span>
                   <Helmet driverId={c.id} size={24} num={false} decorative />
@@ -93,7 +93,7 @@ export const HomeHero = memo(function HomeHero({ onOpen }: { onOpen: () => void 
                   <span className="num hm-tower__gap">{c.position === 1 ? (isQuali ? fmtLap(c.segmentBestMs ?? null) : t('home2.leader')) : c.gapMs !== null ? fmtGap(c.gapMs, 1) : '—'}</span>
                 </li>
               ))
-            : [0, 1, 2].map((i) => <li key={i} className="skel hm-tower__skel" />)}
+            : [0, 1, 2, 3, 4].map((i) => <li key={i} className="skel hm-tower__skel" />)}
         </ol>
         <div className="hm-hero__map">
           {circuit ? (

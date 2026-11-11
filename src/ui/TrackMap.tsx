@@ -183,7 +183,7 @@ const PlainTrack = function PlainTrack({
         ([1, 2, 3] as const).map((s) =>
           sectorLabels[s] ? (
             <g key={`sl${s}`} transform={`translate(${p.sectorMid[s - 1]![0]},${p.sectorMid[s - 1]![1]})`} opacity={selectedSector && selectedSector !== s ? 0.6 : 1}>
-              <rect x={-20} y={-21} width={40} height={16} rx={5} fill="rgba(5,8,10,0.85)" stroke={SECTOR_COLORS[s - 1]} strokeWidth={selectedSector === s ? 1.6 : 0.8} />
+              <rect x={-20} y={-21} width={40} height={16} rx={5} fill="rgba(4, 8, 6,0.85)" stroke={SECTOR_COLORS[s - 1]} strokeWidth={selectedSector === s ? 1.6 : 0.8} />
               <text y={-10} textAnchor="middle" fontSize="9" fontWeight="700" fill={SECTOR_COLORS[s - 1]} fontFamily="Chakra Petch">
                 {sectorLabels[s]}
               </text>
@@ -203,10 +203,10 @@ const PlainTrack = function PlainTrack({
           <g key={c.id} className="trackmap__dot" transform={`translate(${x.toFixed(1)},${y.toFixed(1)})`} opacity={stale ? 0.5 : 1}>
             {c.kind === 'follow' && <circle r={9} fill="none" stroke="var(--lime)" strokeWidth={1.4} opacity={0.8} />}
             {c.kind === 'rival' && <circle r={8} fill="none" stroke="var(--cyan)" strokeWidth={1.2} opacity={0.8} />}
-            <circle r={big ? 4.6 : 3.3} fill={color} stroke="#05080a" strokeWidth={1.2} />
+            <circle r={big ? 4.6 : 3.3} fill={color} stroke="#040706" strokeWidth={1.2} />
             {(c.kind === 'follow' || c.kind === 'rival' || c.kind === 'near') && d && (
               <g transform={`translate(${lx},${ly})`}>
-                <rect x={0} y={-6} width={lw} height={11} rx={3} fill="rgba(5,8,10,0.9)" stroke={c.kind === 'follow' ? 'var(--lime)' : c.kind === 'rival' ? 'var(--cyan)' : 'rgba(255,255,255,.25)'} strokeWidth={0.8} />
+                <rect x={0} y={-6} width={lw} height={11} rx={3} fill="rgba(4, 8, 6,0.9)" stroke={c.kind === 'follow' ? 'var(--lime)' : c.kind === 'rival' ? 'var(--cyan)' : 'rgba(255,255,255,.25)'} strokeWidth={0.8} />
                 <text x={3} y={2} className="trackmap__label">
                   {c.position ? `${c.position} ` : ''}
                   {d.code}
@@ -424,7 +424,7 @@ function NeonTrack({
           <g key={c.id} className="trackmap__dot" transform={`translate(${x.toFixed(1)},${y.toFixed(1)})`} opacity={stale ? 0.5 : 1}>
             {ring && <circle r={10} fill="none" stroke={ring} strokeWidth={1.5} />}
             {ring && <circle r={10} fill={ring} opacity={0.12} />}
-            <circle r={big ? 4.2 : 3} fill={color} stroke="#05080a" strokeWidth={1.5} />
+            <circle r={big ? 4.2 : 3} fill={color} stroke="#040706" strokeWidth={1.5} />
             {tag && (
               <g transform={`translate(${tx},${ty})`}>
                 <rect width={tw} height={14} rx={5} className="trackmap__glass" stroke={ring ?? 'rgba(255,255,255,.25)'} strokeOpacity={ring ? 0.85 : 1} />

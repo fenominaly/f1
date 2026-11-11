@@ -116,7 +116,7 @@
   text-align: right;
   text-wrap: balance;
   transform-origin: right bottom;
-  text-shadow: 0 2px 12px rgba(7, 9, 11, 0.9);
+  text-shadow: 0 2px 12px rgba(5, 7, 6, 0.9);
 }
 /* Track heroes: the bottom row is plain text on the full scrim so it never boxes over the map. */
 .pl-hero--zone .pl-hud--bl,
@@ -131,7 +131,7 @@
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
   box-shadow: none;
-  text-shadow: 0 1px 8px rgba(7, 9, 11, 0.95);
+  text-shadow: 0 1px 8px rgba(5, 7, 6, 0.95);
 }
 .pl-hero--zone .pl-hero__tag,
 .pl-hero--position .pl-hero__tag,
@@ -174,7 +174,7 @@
   stroke-width: 1;
 }
 .pl-hero__pit-box {
-  fill: rgba(7, 9, 11, 0.86);
+  fill: rgba(5, 7, 6, 0.86);
   stroke: rgba(198, 255, 61, 0.7);
   stroke-width: 1;
 }
