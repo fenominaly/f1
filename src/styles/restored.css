@@ -1,0 +1,35 @@
+/* Layout for the persistent race scene and its screen overlays. */
+:root {
+  /* Height of the 3D section on pool screens (scene host 'top' layout). */
+  --pl-scene-h: clamp(210px, 33vh, 290px);
+}
+.scene-host { position: absolute; z-index: 0; inset: 0; overflow: hidden; background: #060a08; }
+.scene-host--hidden { display: none; }
+/* Live: the viewport ends just under the peek sheet (Live sets --lv-scene-cut) so the camera centre stays visible. */
+.scene-host--full { bottom: calc(var(--nav-top) + 8px + var(--lv-scene-cut, 0px)); }
+/* Pool: sits under the pool header; Pool.tsx translates it with the page scroll. */
+.scene-host--top { top: calc(var(--safe-top) + 58px); height: var(--pl-scene-h); bottom: auto; will-change: transform; }
+.scene-host--top::after { content: ''; position: absolute; inset: auto 0 0; height: 64px; pointer-events: none; background: linear-gradient(180deg, transparent, rgba(5, 7, 6, 0.92)); }
+.scene-canvas-wrap, .scene-canvas, .scene-2d, .label-layer { position: absolute; inset: 0; width: 100%; height: 100%; }
+.scene-canvas { display: block; }
+.scene-2d { display: grid; place-items: center; background: radial-gradient(circle at center, #172628, #080d0f 75%); }
+.scene-2d svg { max-width: 100%; max-height: 100%; }
+.label-layer { pointer-events: none; overflow: hidden; }
+.scene-loading { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; background: #0a1012; }
+.screen-stack { z-index: 1; pointer-events: none; }
+.screen { pointer-events: auto; }
+.screen--flush { pointer-events: none; }
+.live { position: absolute; inset: 0; pointer-events: none; }
+.live button, .live [role='button'], .live [role='dialog'], .live input, .live .sheet-backdrop { pointer-events: auto; }
+
+/* Shared helpers still used by other screens (MyPools entry detail, loaders). */
+.progress { width: 160px; height: 4px; margin-top: 10px; border-radius: 4px; background: var(--stroke-2); overflow: hidden; }
+.progress span { display: block; height: 100%; background: var(--lime); }
+.pool-q__title { margin: 0; font-size: 19px; line-height: 1.25; }
+.pool-q__anchor, .pool-q__window { color: var(--text-2); font-size: 12px; margin-top: 6px; }
+.pool-q__meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.pool-q__window { display: flex; align-items: center; gap: 5px; }
+.rules__text { color: var(--text-2); line-height: 1.45; }
+.rules__dl { display: grid; grid-template-columns: minmax(90px, 0.7fr) 1.3fr; gap: 7px 12px; margin: 0; font-size: 12px; }
+.rules__dl dt { color: var(--muted); }
+.rules__dl dd { margin: 0; overflow-wrap: anywhere; }
