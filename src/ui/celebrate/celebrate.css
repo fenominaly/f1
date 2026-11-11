@@ -82,7 +82,7 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(180deg, rgba(7, 9, 11, 0.74) 0%, rgba(7, 9, 11, 0.2) 24%, rgba(7, 9, 11, 0) 40%, rgba(7, 9, 11, 0.3) 56%, rgba(7, 9, 11, 0.86) 72%, #07090b 100%);
+  background: linear-gradient(180deg, rgba(5, 7, 6, 0.74) 0%, rgba(5, 7, 6, 0.2) 24%, rgba(5, 7, 6, 0) 40%, rgba(5, 7, 6, 0.3) 56%, rgba(5, 7, 6, 0.86) 72%, #050706 100%);
 }
 
 .cel .cel__top {
@@ -96,7 +96,7 @@
 .cel .cel__kicker {
   padding: 6px 10px;
   border-radius: var(--r-chip);
-  background: rgba(7, 9, 11, 0.6);
+  background: rgba(5, 7, 6, 0.6);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   font-size: 11.5px;
@@ -113,7 +113,7 @@
   place-items: center;
   border-radius: 50%;
   color: var(--text);
-  background: rgba(7, 9, 11, 0.6);
+  background: rgba(5, 7, 6, 0.6);
   border: 1px solid var(--stroke-2);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
@@ -258,7 +258,7 @@
   height: 30px;
   padding: 0 10px;
   border-radius: var(--r-chip);
-  background: rgba(7, 9, 11, 0.66);
+  background: rgba(5, 7, 6, 0.66);
   border: 1px solid var(--stroke-2);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
@@ -407,7 +407,7 @@
 
 /* ---------- Level-up ---------- */
 .cel .cel__shade--level {
-  background: linear-gradient(180deg, rgba(7, 9, 11, 0.66) 0%, rgba(7, 9, 11, 0) 18%, rgba(7, 9, 11, 0) 58%, rgba(7, 9, 11, 0.84) 76%, #07090b 100%);
+  background: linear-gradient(180deg, rgba(5, 7, 6, 0.66) 0%, rgba(5, 7, 6, 0) 18%, rgba(5, 7, 6, 0) 58%, rgba(5, 7, 6, 0.84) 76%, #050706 100%);
 }
 /* Sits in the empty hex of the plate (its centre is at 40 % of the portrait art). */
 .cel .cel-lvl__badge {
@@ -496,7 +496,7 @@
   position: relative;
   z-index: 1;
   padding: 14px 14px 16px;
-  background: linear-gradient(180deg, rgba(10, 14, 17, 0.5) 0%, rgba(10, 14, 17, 0.84) 52%, rgba(10, 14, 17, 0.95) 100%);
+  background: linear-gradient(180deg, rgba(9, 13, 11, 0.5) 0%, rgba(9, 13, 11, 0.84) 52%, rgba(9, 13, 11, 0.95) 100%);
 }
 .cel-loss .cel-loss__head {
   display: flex;
@@ -834,7 +834,7 @@
 .rem .rem__scrim {
   position: absolute;
   inset: 0;
-  background: rgba(3, 6, 8, 0.74);
+  background: rgba(3, 6, 5, 0.74);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
 }

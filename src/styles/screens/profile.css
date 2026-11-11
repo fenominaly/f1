@@ -126,7 +126,7 @@
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  box-shadow: 0 0 0 2px #0e1418, 0 0 0 4px var(--team);
+  box-shadow: 0 0 0 2px #0c110f, 0 0 0 4px var(--team);
   overflow: hidden;
 }
 .pf-hero__av img,

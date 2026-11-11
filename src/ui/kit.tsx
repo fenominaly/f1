@@ -201,7 +201,7 @@ export function DriverAvatarSvg({ id, size = 40, ring }: { id: string; size?: nu
           <stop offset="1" stopColor={shade(c1, -0.35)} />
         </linearGradient>
       </defs>
-      <circle cx="24" cy="24" r="23" fill="#0c1115" stroke={ring ? team?.color : 'rgba(255,255,255,0.1)'} strokeWidth={ring ? 2 : 1} />
+      <circle cx="24" cy="24" r="23" fill="#0b100e" stroke={ring ? team?.color : 'rgba(255,255,255,0.1)'} strokeWidth={ring ? 2 : 1} />
       <path d="M8 29c0-10 7-17 17-17 8 0 15 6 15 14v5c0 2-1.5 3.5-3.5 3.5H15C11 34.5 8 32.5 8 29z" fill={`url(#hg-${id})`} />
       <path d="M21 21h19v6H22z" fill="#0a0d10" />
       <path d="M22 22h17v2.5H22z" fill={c2} opacity="0.85" />

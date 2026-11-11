@@ -1,7 +1,7 @@
 /* Live race overlay (workstream D). Everything floats over the persistent 3D scene. */
 
 .lv {
-  --lv-glass: linear-gradient(180deg, rgba(17, 24, 28, 0.94), rgba(9, 13, 16, 0.94));
+  --lv-glass: linear-gradient(180deg, rgba(17, 24, 28, 0.94), rgba(8, 13, 11, 0.94));
   --lv-line: rgba(255, 255, 255, 0.09);
   --lv-top: calc(var(--safe-top) + 8px);
   --lv-strip: calc(var(--safe-top) + 62px);
@@ -58,7 +58,7 @@
 .lv-viewbtn {
   height: 48px;
   border-radius: 14px;
-  background: rgba(10, 14, 17, 0.9);
+  background: rgba(9, 13, 11, 0.9);
 }
 .lv-session {
   flex: 1;
@@ -156,7 +156,7 @@
   color: var(--text-2);
 }
 .lv-viewbtn:active {
-  background: rgba(24, 31, 36, 0.95);
+  background: rgba(22, 31, 27, 0.95);
 }
 .lv-live-dot {
   width: 7px;
@@ -181,7 +181,7 @@
   height: 46px;
   padding: 3px;
   border-radius: 14px;
-  background: rgba(10, 14, 17, 0.88);
+  background: rgba(9, 13, 11, 0.88);
 }
 .tw-strip__scroll {
   display: flex;
@@ -407,7 +407,7 @@
   place-content: center;
   justify-items: center;
   gap: 10px;
-  background: radial-gradient(circle at 50% 40%, rgba(7, 11, 13, 0.6), rgba(5, 7, 8, 0.86));
+  background: radial-gradient(circle at 50% 40%, rgba(6, 11, 9, 0.6), rgba(5, 7, 8, 0.86));
 }
 .lv-loading__ring {
   width: 42px;
@@ -509,7 +509,7 @@
   min-height: 36px;
   padding: 6px 12px 6px 10px;
   border-radius: 12px;
-  background: rgba(10, 14, 17, 0.92);
+  background: rgba(9, 13, 11, 0.92);
   font-size: 13px;
   font-weight: 600;
 }
@@ -540,7 +540,7 @@
   min-width: min(300px, 100%);
   padding: 10px 14px 12px;
   border-radius: var(--r-card);
-  background: rgba(10, 14, 17, 0.94);
+  background: rgba(9, 13, 11, 0.94);
   box-shadow:
     var(--rim),
     inset 3px 0 0 var(--ot-tone);
@@ -597,7 +597,7 @@
   min-width: min(340px, 100%);
   padding: 10px 12px;
   border-radius: var(--r-card);
-  background: rgba(10, 14, 17, 0.95);
+  background: rgba(9, 13, 11, 0.95);
   box-shadow:
     var(--rim),
     0 0 0 1px rgba(255, 255, 255, 0.12);
@@ -749,12 +749,12 @@
   min-height: 56px;
   padding: 8px 6px 8px 12px;
   border-radius: 14px;
-  background: rgba(10, 14, 17, 0.92);
+  background: rgba(9, 13, 11, 0.92);
   color: var(--text);
   text-align: left;
 }
 .fc:active {
-  background: rgba(24, 31, 36, 0.95);
+  background: rgba(22, 31, 27, 0.95);
 }
 .fc__tick {
   flex: none;
@@ -881,7 +881,7 @@
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 22px;
-  background: linear-gradient(180deg, #131b20 0%, #0b1013 70%);
+  background: linear-gradient(180deg, #131b20 0%, #0a0f0d 70%);
   box-shadow: 0 -14px 40px rgba(0, 0, 0, 0.55);
   transition: height 0.38s var(--ease-out);
   will-change: height;
@@ -1060,7 +1060,7 @@
 .pf__timer {
   flex: none;
   border-radius: 50%;
-  background: rgba(7, 9, 11, 0.7);
+  background: rgba(5, 7, 6, 0.7);
 }
 .pf__mine {
   flex: none;
@@ -1092,7 +1092,7 @@
   column-gap: 6px;
   min-height: 44px;
   padding: 4px 8px;
-  background: rgba(10, 14, 17, 0.72);
+  background: rgba(9, 13, 11, 0.72);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
@@ -1658,10 +1658,10 @@
 .lv-ch__btn--live {
   border-color: transparent;
   background: var(--lime);
-  color: #07090b;
+  color: #050706;
 }
 .lv-ch__btn--live .lv-live-dot {
-  background: #07090b;
+  background: #050706;
   animation: none;
 }
 .lv-drivers {

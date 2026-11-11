@@ -126,7 +126,7 @@
   --tone: var(--lime);
   background:
     radial-gradient(90% 120% at 0% 0%, rgba(198, 255, 61, 0.12), transparent 60%),
-    linear-gradient(180deg, rgba(24, 31, 37, 0.85), rgba(12, 16, 19, 0.9));
+    linear-gradient(180deg, rgba(22, 31, 27, 0.85), rgba(11, 16, 14, 0.9));
 }
 .mypools .ticket--lost {
   --tone: #ff6b74;
@@ -338,7 +338,7 @@
   gap: 3px;
   min-width: 0;
   padding: 10px 12px;
-  background: rgba(8, 11, 13, 0.94);
+  background: rgba(7, 11, 9, 0.94);
 }
 .mypools .xticket__cell .ticket__k {
   white-space: normal;
@@ -374,7 +374,7 @@
 .mypools .xticket__chequer {
   height: 10px;
   opacity: 0.16;
-  background: repeating-conic-gradient(#e9eef0 0 25%, #0b0f12 0 50%) 0 0 / 10px 10px;
+  background: repeating-conic-gradient(#e9eef0 0 25%, #090d0b 0 50%) 0 0 / 10px 10px;
 }
 .mypools .xticket-await .row {
   align-items: center;
@@ -477,7 +477,7 @@
   margin-top: 3px;
   flex: none;
   border-radius: 50%;
-  background: #05080a;
+  background: #040706;
   border: 2px solid var(--cyan);
 }
 .mypools .evidence__main {
@@ -575,7 +575,7 @@
   flex-direction: row;
   align-items: baseline;
   justify-content: space-between;
-  background: color-mix(in srgb, var(--tone) 8%, rgba(8, 11, 13, 0.94));
+  background: color-mix(in srgb, var(--tone) 8%, rgba(7, 11, 9, 0.94));
 }
 .mypools .xticket__cell--pay .xticket__v {
   font-size: var(--fs-xl);
